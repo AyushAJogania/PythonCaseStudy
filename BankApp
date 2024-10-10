@@ -1,0 +1,246 @@
+class Account:
+
+    def __init__(self, account_number, name, balance=0):
+
+        self.account_number = account_number
+
+        self.name = name
+
+        self.balance = balance
+
+        self.transactions = []
+
+
+
+
+    def deposit(self, amount):
+
+        self.balance += amount
+
+        self.transactions.append(f"Deposited: {amount}")
+
+        print(f"Deposited {amount}. New balance: {self.balance}")
+
+
+
+
+    def withdraw(self, amount):
+
+        if amount > self.balance:
+
+            print("Insufficient funds")
+
+        else:
+
+            self.balance -= amount
+
+            self.transactions.append(f"Withdrew: {amount}")
+
+            print(f"Withdrew {amount}. New balance: {self.balance}")
+
+
+
+
+    def transfer(self, amount, target_account):
+
+        if amount > self.balance:
+
+            print("Insufficient funds")
+
+        else:
+
+            self.balance -= amount
+
+            target_account.balance += amount
+
+            self.transactions.append(f"Transferred: {amount} to account {target_account.account_number}")
+
+            target_account.transactions.append(f"Received: {amount} from account {self.account_number}")
+
+            print(f"Transferred {amount} to account {target_account.account_number}. New balance: {self.balance}")
+
+
+
+
+    def print_transactions(self):
+
+        print(f"Transactions for account {self.account_number}:")
+
+        for transaction in self.transactions:
+
+            print(transaction)
+
+
+
+
+# List to store account objects
+
+accounts = []
+
+
+
+
+# Function to find account by account number
+
+def find_account(account_number):
+
+    for account in accounts:
+
+        if account.account_number == account_number:
+
+            return account
+
+    return None
+
+
+
+
+# Main loop
+
+while True:
+
+    print("\n1. Create Account")
+
+    print("\n2. View Account Details")
+
+    print("\n3. Deposit")
+
+    print("\n4. Withdraw")
+
+    print("\n5. Transfer Funds")
+
+    print("\n6. Print Transactions")
+
+    print("\n7. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+
+
+
+    if choice == 1:
+
+        account_number = input("Enter account number: ")
+
+        name = input("Enter account holder name: ")
+
+        account = Account(account_number, name)
+
+        accounts.append(account)
+
+        print("Account created successfully")
+
+
+
+
+    elif choice == 2:
+
+        account_number = input("Enter account number: ")
+
+        account = find_account(account_number)
+
+        if account:
+
+            print(f"Account Number: {account.account_number}")
+
+            print(f"Account Holder: {account.name}")
+
+            print(f"Balance: {account.balance}")
+
+        else:
+
+            print("Account not found")
+
+
+
+
+    elif choice == 3:
+
+        account_number = input("Enter account number: ")
+
+        account = find_account(account_number)
+
+        if account:
+
+            amount = float(input("Enter amount to deposit: "))
+
+            account.deposit(amount)
+
+        else:
+
+            print("Account not found")
+
+
+
+
+    elif choice == 4:
+
+        account_number = input("Enter account number: ")
+
+        account = find_account(account_number)
+
+        if account:
+
+            amount = float(input("Enter amount to withdraw: "))
+
+            account.withdraw(amount)
+
+        else:
+
+            print("Account not found")
+
+
+
+
+    elif choice == 5:
+
+        from_account_number = input("Enter your account number: ")
+
+        to_account_number = input("Enter target account number: ")
+
+        from_account = find_account(from_account_number)
+
+        to_account = find_account(to_account_number)
+
+        if from_account and to_account:
+
+            amount = float(input("Enter amount to transfer: "))
+
+            from_account.transfer(amount, to_account)
+
+        else:
+
+            print("One or both accounts not found")
+
+
+
+
+    elif choice == 6:
+
+        account_number = input("Enter account number: ")
+
+        account = find_account(account_number)
+
+        if account:
+
+            account.print_transactions()
+
+        else:
+
+            print("Account not found")
+
+
+
+
+    elif choice == 7:
+
+        print("Exiting...;)")
+
+        break
+
+
+
+
+    else:
+
+        print("Invalid choice. Please try again.")
